@@ -1,6 +1,6 @@
 # Demo of OTP 25 SSL bug
 
-OTP 25 seems to have issues connecting to certain hosts, e.g. `https://login.microsoftonline.com`, causing timeouts.
+OTP 25 seems to have issues connecting to certain hosts, e.g. `https://login.microsoftonline.com`, causing timeouts. This does not happen with OTP 24.
 
 To demonstrate the issue, simply clone the repo, run `mix deps.get` and then `mix test` and notice the failures:
 
