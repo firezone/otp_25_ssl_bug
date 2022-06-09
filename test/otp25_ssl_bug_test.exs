@@ -2,26 +2,27 @@ defmodule Otp25SslBugTest do
   use ExUnit.Case
   doctest Otp25SslBug
 
-  @https_url "https://login.microsoftonline.com"
-  @http_url "http://neverssl.com"
+  @urls [
+    "https://google.com",
+    "https://reddit.com",
+    "https://news.ycombinator.com",
+    "https://github.com",
+    "https://apple.com",
+    "https://firezone.dev",
+    "https://microsoft.com",
+    "https://login.microsoft.com",
+    "https://login.microsoftonline.com"
+  ]
 
   defp finch_get(url) do
     Finch.build(:get, url) |> Finch.request(:finch_app)
   end
 
-  test "successfully connects to https urls with HTTPoison" do
-    assert %HTTPoison.Response{} = HTTPoison.get!(@https_url)
-  end
-
-  test "succesfully connects to http urls with HTTPoison" do
-    assert %HTTPoison.Response{} = HTTPoison.get!(@http_url)
-  end
-
-  test "succesfully connects to https urls with Finch" do
-    assert {:ok, %Finch.Response{}} = finch_get(@https_url)
-  end
-
-  test "succesfully connects to http urls with Finch" do
-    assert {:ok, %Finch.Response{}} = finch_get(@http_url)
+  for url <- @urls do
+    @tag url: url
+    test "successfully connects to #{url}", %{url: url} do
+      assert %HTTPoison.Response{} = HTTPoison.get!(url)
+      assert {:ok, %Finch.Response{}} = finch_get(url)
+    end
   end
 end
